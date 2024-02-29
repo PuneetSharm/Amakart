@@ -2,7 +2,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-#Building E-commerce front-end using React.
+# Building E-commerce front-end using React.
 
 
 ## Available Scripts
