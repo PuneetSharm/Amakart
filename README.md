@@ -2,6 +2,11 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# Building E-commerce front-end using React
+
+The E-commerce website is named AmaKart build referring to GeeksforGeeks instructor videos. 
+
+
 ## Available Scripts
 
 In the project directory, you can run:
