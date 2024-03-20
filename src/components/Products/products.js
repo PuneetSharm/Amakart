@@ -2,17 +2,36 @@ import ListItem from "../Products/ListItems/listitem";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import Loader from "../UI/loader";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 const Products = () => {
     const [items, setItem] = useState([]);
     const [loader,setLoader]= useState(true);
+    const params = useParams();
+    const navigate = useNavigate();
+    const {search} = useLocation();
+    const queryParams = new URLSearchParams(search).get("search");
+    const handleNotFound= () =>{
+        navigate("/404");
+    }
     // const [presentItems, setPresentItems]= useState([]);
 
     useEffect(()=> {
         async function fetchItems(){
             try{
-                const response = await axios.get("https://react-2023-3d76a-default-rtdb.firebaseio.com/items.json")
+                let slug = "items.json";
+                if(params.category){
+                    slug = `items-${params.category}.json`;
+                }
+                if(queryParams){
+                    slug += `?search=${queryParams}`
+                }
+                const response = await axios.get(`https://react-2023-3d76a-default-rtdb.firebaseio.com/${slug}`)
                 const data = response.data;
+                if(!data){
+                    handleNotFound();
+                    return;
+                }
                 const transformedData = data.map((item, index) => {
                     return {
                         ...item,
@@ -22,8 +41,7 @@ const Products = () => {
                 setItem(transformedData);
             }
             catch (error) {
-            console.log("Error : ",error);
-            alert(error);
+            console.log("Error: ", error);
             }
             finally{
                 setLoader(false);
@@ -31,7 +49,12 @@ const Products = () => {
             
         }
        fetchItems(); 
-    }, []);
+
+       return() => {
+        setItem([]);
+        setLoader(true);
+       }
+    }, [params.category, queryParams]);
 
 //     useEffect(() => {
 //         if(eventState.id > -1){
@@ -81,7 +104,7 @@ const Products = () => {
     <div className={"product-list--wrapper"}>
     {
         items.map(item =>{
-            return (<ListItem onAdd={handleAddItem} onRemove={handleRemoveItem} key={item.id} data={item} />)
+            return (<ListItem key={item.id} data={item} />)
         })
     }
         </div>
@@ -89,5 +112,5 @@ const Products = () => {
     {loader && <Loader/>}
     </>
     )
-}
+};
 export default Products;

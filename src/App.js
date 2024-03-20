@@ -1,6 +1,7 @@
 import Header from "./components/Layouts/header";
 import Subheader from "./components/Layouts/subheader";
 import Products from "./components/Products/products";
+import {Routes, Route, Navigate} from "react-router-dom";
 
 const App = ()=> {
 //   const [cartItems, setCartItems]=useState([]);
@@ -47,8 +48,12 @@ const App = ()=> {
   <div>
   <Header />
   <Subheader />
- <Products />
-  </div>
+  <Routes>
+        <Route path="/404" element={<h1>Page Not Found</h1>} />
+        <Route path="/:category?" element={<Products />} />
+        <Route path="*" element={<Navigate to="/404" replace />} />
+      </Routes>
+    </div>
   );
 }
 
