@@ -1,8 +1,21 @@
+import { useNavigate } from "react-router-dom";
 import Cart from "../Cart";
 import SearchBox from "../UI/search";
+import { logout } from "../../actions/auth";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const Header = () => {
+    const navigate = useNavigate();
+    const authState = useSelector(state => state.auth);
+    const handleNav = () => {
+        navigate("/auth/login");
+    }
+    const dispatch = useDispatch()
+
+    const logoutHandler = () => {
+        dispatch(logout());
+    }
     return(
         <header>
         <div className="nav-brand">
@@ -22,6 +35,15 @@ const Header = () => {
         <div className="searchBox-container">
             <SearchBox />
         </div>
+        {
+            authState && authState.idToken ? 
+            <div className="user-actions">
+                <button title="User Profile" className="material-icons">account_circle</button>
+                <button onClick={logoutHandler} title="Logout" className="material-icons">logout</button>
+            </div>
+            :
+            <button className="login-btn" onClick={handleNav}>Login</button>
+        }
         <div className="cart-container">
             <Cart />
         </div>

@@ -1,9 +1,15 @@
+import { useDispatch, useSelector } from "react-redux";
+import AuthIndex from "./components/Auth/index";
 import Header from "./components/Layouts/header";
 import Subheader from "./components/Layouts/subheader";
 import Products from "./components/Products/products";
 import {Routes, Route, Navigate} from "react-router-dom";
+import { checkIsLoggedIn } from "./actions/auth";
+import { useEffect } from "react";
 
 const App = ()=> {
+
+  
 //   const [cartItems, setCartItems]=useState([]);
 //   const [eventQueue, setEventQueue] = useState({
 //     id: " ",
@@ -44,13 +50,29 @@ const App = ()=> {
 //   });
 // }
 
+const dispatch = useDispatch();
+const authState = useSelector(state => state.auth);
+
+useEffect(()=> {
+    dispatch(checkIsLoggedIn(()=>{}));
+  }, []);
+
   return (
   <div>
   <Header />
   <Subheader />
   <Routes>
         <Route path="/404" element={<h1>Page Not Found</h1>} />
-        <Route path="/:category?" element={<Products />} />
+        <Route path="/:category?"  element={<Products />} />
+        { authState.idToken ? 
+        ( <>
+        <Route path="/auth/login"  element={<Navigate replace to="/" />}/>
+        <Route path="/auth/signup" element={<Navigate replace to="/" />} /> 
+        </>)
+        :
+          <Route path="/auth/:type"  element={<AuthIndex/>} />
+        }
+        
         <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
     </div>

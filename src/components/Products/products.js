@@ -26,7 +26,7 @@ const Products = () => {
                 if(queryParams){
                     slug += `?search=${queryParams}`
                 }
-                const response = await axios.get(`https://react-2023-3d76a-default-rtdb.firebaseio.com/${slug}`)
+                const response = await axios.get(`https://react-2024-86ab4-default-rtdb.firebaseio.com/${slug}`)
                 const data = response.data;
                 if(!data){
                     handleNotFound();
