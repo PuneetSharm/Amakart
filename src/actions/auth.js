@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BASE_URL = "https://identitytoolkit.googleapis.com/v1/";
-const API_KEY = "AIzaSyCY90iTh16vfPu4l6iIlRb4Z7DpN-NR-vk";
+const API_KEY = process.env.E_COMMERCE_APP_API_KEY;
 
 export const signupWithEmailAndPassword = (details, callback) =>{
     return async(dispatch) => {
